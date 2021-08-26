@@ -11,6 +11,14 @@ var taskFormHandler = function(event) { //insert event here when we need to paus
     var taskNameInput = document.querySelector("input[name='task-name']").value;
     var taskTypeInput = document.querySelector("select[name='task-type']").value;
 
+    //Checks if the form has content
+    if (!taskNameInput || !taskTypeInput) {
+      alert("You need to fill out the task form!");
+      return false;
+    }
+
+    formEl.requestFullscreen();
+
     // package data as an obj
     var taskDataObj = {
       name: taskNameInput,
