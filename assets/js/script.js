@@ -1,5 +1,7 @@
 //New Task code
 
+var taskIdCounter = 0;
+
 //defines the classes
 var formEl = document.querySelector("#task-form");
 var taskstodoEl = document.querySelector("#tasks-to-do");
@@ -17,7 +19,7 @@ var taskFormHandler = function(event) { //insert event here when we need to paus
       return false;
     }
 
-    formEl.requestFullscreen();
+   // formEl.requestFullscreen();//! Opens full screen
 
     // package data as an obj
     var taskDataObj = {
@@ -34,6 +36,9 @@ var createTaskEl = function(taskDataObj) {
   var listItemEl = document.createElement("li");
   listItemEl.className = "task-item";
 
+  //add task id as a custom attribute
+  listItemEl.setAttribute("data-task-id", taskIdCounter);
+
   //create div to hold task info and add to list item
   var taskInfoEl = document.createElement("div");
   //give it a class name
@@ -43,9 +48,58 @@ var createTaskEl = function(taskDataObj) {
   taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskDataObj.name + "</h3><span class='task-type'>" + taskDataObj.type + "</span>";
   listItemEl.appendChild(taskInfoEl);
 
+  var taskActionsEl = createTaskActions(taskIdCounter);
+  listItemEl.appendChild(taskActionsEl);
+
   //add entire list item to list
   taskstodoEl.appendChild(listItemEl);
+
+  // increase task counter for next unique id
+  taskIdCounter++;
 };
+
+var createTaskActions = function(taskId) {
+  var actionContainerEl = document.createElement("div");
+  actionContainerEl.className = "task actions";
+
+  //create edit button
+  var editButtonEl = document.createElement("button");
+  editButtonEl.textContent = "Edit";
+  editButtonEl.className = "edit-btn";
+  editButtonEl.setAttribute("data-task-id", taskId);
+
+  actionContainerEl.appendChild(editButtonEl);
+  
+  //create delete button
+  var deleteButtonEl = document.createElement("button");
+  deleteButtonEl.textContent = "Delete";
+  deleteButtonEl.className = "delete-btn";
+  deleteButtonEl.setAttribute("data-task-id", taskId);
+
+  var statusSelectEl = document.createElement("select");
+  statusSelectEl.className = "select-status";
+  statusSelectEl.setAttribute("name", "status-change");
+  statusSelectEl.setAttribute("data-task-id", taskId);
+
+  actionContainerEl.appendChild(statusSelectEl);
+
+  actionContainerEl.appendChild(deleteButtonEl);
+
+  var statusChoices = ["To Do", "In Progress", "Completed"];
+
+  for (var i = 0; i < statusChoices.length; i++) {
+    // create option element
+    var statusOptionEl = document.createElement("option");
+    statusOptionEl.textContent = statusChoices[i];
+    statusOptionEl.setAttribute("value", statusChoices[i]);
+  
+    // append to select
+    statusSelectEl.appendChild(statusOptionEl);
+  }
+  
+  return actionContainerEl;
+};
+
 
 //Event Listener - place after defining the function.
 //This is the callback function - aka on a button click, create a task.
