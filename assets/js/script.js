@@ -1,11 +1,9 @@
 //New Task code
-
 var taskIdCounter = 0;
 
 //defines the classes
 var formEl = document.querySelector("#task-form");
 var taskstodoEl = document.querySelector("#tasks-to-do");
-
 
 // defines the function "taskFormHandler" that can be called back as needed.
 var taskFormHandler = function(event) { //insert event here when we need to pause the browser
@@ -29,8 +27,12 @@ var taskFormHandler = function(event) { //insert event here when we need to paus
 
     //send it as an argument to createTaskEl
     createTaskEl(taskDataObj);
-  };
+};
+//Event Listener - place after defining the function.
+//This is the callback function - aka on a button click, create a task.
+formEl.addEventListener("submit", taskFormHandler);
 
+//Create the task and it's attributes. also Appends to task counter id and to do.
 var createTaskEl = function(taskDataObj) {
   //create list item
   var listItemEl = document.createElement("li");
@@ -58,6 +60,7 @@ var createTaskEl = function(taskDataObj) {
   taskIdCounter++;
 };
 
+//Create the buttons for the task
 var createTaskActions = function(taskId) {
   var actionContainerEl = document.createElement("div");
   actionContainerEl.className = "task actions";
@@ -100,25 +103,44 @@ var createTaskActions = function(taskId) {
   return actionContainerEl;
 };
 
-
-//Event Listener - place after defining the function.
-//This is the callback function - aka on a button click, create a task.
-formEl.addEventListener("submit", taskFormHandler);
-
-//this function idemtified the clicked delete button, the next performns the action
+//this function idemtified the clicked delete button
 var taskButtonHandler = function(event) {
+  //get target element from event
+  var targetEl = event.target;
   console.log(event.target);
 
-  if (event.target.matches(".delete-btn")) {
-    //get the element's task id
-    var taskId = event.target.getAttribute("data-task-id");
-    console.log(taskId);
+  //!Edit button target function starts
+  if (targetEl.matches(".edit-btn")) {
+    var taskId = targetEl.getAttribute("data-task-id");
+    editTask(taskId);
   }
+  //!Edit button target function ends
 
-  if (event.target.matches(".delete-btn")) {
-    var taskId = event.target.getAttribute("data-task-id");
+  //!Delete button target function starts
+  else if (targetEl.matches(".delete-btn")) {
+    var taskId = targetEl.getAttribute("data-task-id");
     deleteTask(taskId);
-  };
+  }
+  //!Delete button target function ends
+};
+
+// this function follows the "task button handler" and performs the edit action
+var editTask = function(taskId) {
+  console.log("editin task #" + taskId);
+
+  //get task list item element
+  var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+  console.log(taskSelected + " is being edited");
+
+  //get content from task name and type
+  var taskName = taskSelected.querySelector("h3.task-name").textContent;
+  console.log(taskName);
+  var taskType = taskSelected.querySelector("span.task-type").textContent;
+  console.log(taskType);
+  //
+  document.querySelector("input[name='task-name']").value = taskName;
+  document.querySelector("select[name='task-type']").value = taskType;
+  document.querySelector("#save-task").textContent = "Save Task";
 };
 
 //this function follows the "task button handler" and performs the delete action
@@ -129,7 +151,5 @@ var deleteTask = function(taskId) {
 };
 
 var pageContentEl = document.querySelector("#page-content");
-
 // other logic...
-
 pageContentEl.addEventListener("click", taskButtonHandler);
