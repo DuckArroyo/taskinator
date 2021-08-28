@@ -51,9 +51,6 @@ var taskFormHandler = function(event) { //insert event here when we need to paus
     //send it as an argument to createTaskEl
     createTaskEl(taskDataObj);
 };
-//Event Listener - place after defining the function.
-//This is the callback function - aka on a button click, create a task.
-formEl.addEventListener("submit", taskFormHandler);
 
 //Create the task and it's attributes. also Appends to task counter id and to do.
 var createTaskEl = function(taskDataObj) {
@@ -221,7 +218,10 @@ var deleteTask = function(taskId) {
   taskSelected.remove();
 };
 
-var pageContentEl = document.querySelector("#page-content");
+//Event Listener - place after defining the function.
+//This is the callback function - aka on a button click, create a task.
+formEl.addEventListener("submit", taskFormHandler);
+
 // other logic...
 pageContentEl.addEventListener("click", taskButtonHandler);
 
