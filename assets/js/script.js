@@ -65,7 +65,7 @@ var createTaskActions = function(taskId) {
   //create edit button
   var editButtonEl = document.createElement("button");
   editButtonEl.textContent = "Edit";
-  editButtonEl.className = "edit-btn";
+  editButtonEl.className = "btn edit-btn";
   editButtonEl.setAttribute("data-task-id", taskId);
 
   actionContainerEl.appendChild(editButtonEl);
@@ -73,7 +73,7 @@ var createTaskActions = function(taskId) {
   //create delete button
   var deleteButtonEl = document.createElement("button");
   deleteButtonEl.textContent = "Delete";
-  deleteButtonEl.className = "delete-btn";
+  deleteButtonEl.className = "btn delete-btn";
   deleteButtonEl.setAttribute("data-task-id", taskId);
 
   var statusSelectEl = document.createElement("select");
@@ -104,3 +104,32 @@ var createTaskActions = function(taskId) {
 //Event Listener - place after defining the function.
 //This is the callback function - aka on a button click, create a task.
 formEl.addEventListener("submit", taskFormHandler);
+
+//this function idemtified the clicked delete button, the next performns the action
+var taskButtonHandler = function(event) {
+  console.log(event.target);
+
+  if (event.target.matches(".delete-btn")) {
+    //get the element's task id
+    var taskId = event.target.getAttribute("data-task-id");
+    console.log(taskId);
+  }
+
+  if (event.target.matches(".delete-btn")) {
+    var taskId = event.target.getAttribute("data-task-id");
+    deleteTask(taskId);
+  };
+};
+
+//this function follows the "task button handler" and performs the delete action
+var deleteTask = function(taskId) {
+  var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+  console.log(taskSelected + " has been deleted");
+  taskSelected.remove();
+};
+
+var pageContentEl = document.querySelector("#page-content");
+
+// other logic...
+
+pageContentEl.addEventListener("click", taskButtonHandler);
