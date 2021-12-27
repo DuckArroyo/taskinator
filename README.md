@@ -2,6 +2,10 @@
 
 Bootcamp Module 4
 
+[Github Pages](https://duckarroyo.github.io/taskinator/)
+
+[Github Repository](https://github.com/DuckArroyo/taskinator)
+
 # Contributions by:
 
 DeveloperDuckArroyo
